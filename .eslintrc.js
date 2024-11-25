@@ -1,9 +1,14 @@
 // https://docs.expo.dev/guides/using-eslint/
 module.exports = {
-  extends: ["expo", "prettier"],
-  plugins: ["prettier"],
-  rules: {
-    "prettier/prettier": "error",
+  env: {
+    browser: true,
+    node: true,
+    jest: true,
   },
-  ignorePatterns: ["/dist/*"],
+  extends: ['expo', 'plugin:jest/recommended', 'prettier'],
+  plugins: ['jest', 'prettier'],
+  rules: {
+    'prettier/prettier': 'error',
+  },
+  ignorePatterns: ['/dist/*'],
 };
