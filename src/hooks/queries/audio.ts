@@ -6,7 +6,7 @@ export const useAudioList = () => {
     queryKey: ['audioList'],
     queryFn: fetchAudioList,
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.next_cursor === undefined) {
+      if (lastPage.next_cursor === '') {
         return undefined;
       }
       return lastPage.next_cursor;

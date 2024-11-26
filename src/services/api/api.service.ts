@@ -1,3 +1,4 @@
+import { ENV } from '@/src/constants/ENV';
 import { AxiosNetworkClient } from '@/src/services/network-clients/axios-network-client.service';
 import { INetworkClient } from '@/src/services/network-clients/network-client.interface';
 
@@ -10,7 +11,7 @@ export class APIService {
   static getInstance(): APIService {
     if (!APIService.instance) {
       const apiService = new APIService();
-      apiService.useClient(new AxiosNetworkClient('https://api.example.com'));
+      apiService.useClient(new AxiosNetworkClient(ENV.API_URL));
       APIService.instance = apiService;
     }
     return APIService.instance;

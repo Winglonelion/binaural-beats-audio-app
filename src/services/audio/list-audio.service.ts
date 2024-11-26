@@ -9,10 +9,10 @@ export const fetchAudioList = async ({
   pageParam?: string;
 }): Promise<AudioResponse> => {
   const apiService = APIService.getInstance();
+  const params = pageParam ? { cursor: pageParam } : {};
   const response = await apiService.get('/audio', {
-    params: {
-      cursor: pageParam,
-    },
+    params,
   });
+  console.log('🚀 ~ response:', response);
   return response?.data;
 };
