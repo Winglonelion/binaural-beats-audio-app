@@ -1,6 +1,6 @@
-import { ENV } from '@/src/constants/ENV';
-import { AxiosNetworkClient } from '@/src/services/network-clients/axios-network-client.service';
-import { INetworkClient } from '@/src/services/network-clients/network-client.interface';
+import { ENV } from '@/constants/ENV';
+import { AxiosNetworkClient } from '@/services/network-clients/axios-network-client.service';
+import { INetworkClient } from '@/services/network-clients/network-client.interface';
 
 export class APIService {
   private static instance: APIService;

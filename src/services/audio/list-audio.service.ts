@@ -1,7 +1,7 @@
 // src/api/audio.ts
 
-import { APIService } from '@/src/services/api/api.service';
-import { AudioResponse } from '@/src/services/audio/audio-response.types';
+import { APIService } from '@/services/api/api.service';
+import { AudioResponse } from '@/services/audio/audio-response.types';
 
 export const fetchAudioList = async ({
   pageParam,

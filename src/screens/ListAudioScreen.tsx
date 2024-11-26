@@ -1,7 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { FlashList } from '@shopify/flash-list';
-import { useAudioList } from '@/src/hooks/queries/audio';
+import { useAudioList } from '@/hooks/queries/audio';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import CommonStyles from '@/styles/common';
+import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -31,19 +34,22 @@ const ListAudioScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <FlashList
-        data={audioList}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.name}
-        estimatedItemSize={100}
-        onEndReached={loadMore}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={
-          isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-        }
-      />
-    </View>
+    <GestureHandlerRootView style={styles.container}>
+      <View style={CommonStyles.flex1}>
+        <FlashList
+          data={audioList}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.name}
+          estimatedItemSize={100}
+          onEndReached={loadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={
+            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+          }
+        />
+      </View>
+      <MusicPlayer />
+    </GestureHandlerRootView>
   );
 };
 
