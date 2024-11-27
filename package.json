@@ -3,7 +3,7 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
+    "start": "expo start --dev-client",
     "prebuild": "expo prebuild",
     "android": "expo run:android",
     "pod": "npx pod-install ios",

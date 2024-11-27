@@ -1,10 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
 import { FlashList } from '@shopify/flash-list';
 import { useAudioList } from '@/hooks/queries/audio';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import CommonStyles from '@/styles/common';
-import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
+import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
+import { AudioFile } from '@/constants/audio.const';
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -12,11 +18,18 @@ const ListAudioScreen = () => {
 
   const audioList = data?.pages.flatMap((page) => page.files) || [];
 
-  const renderItem = ({ item }: { item: { name: string; size: number } }) => (
-    <View style={styles.item}>
+  const { playNew } = useMusicPlayer();
+
+  const renderItem = ({ item }: { item: AudioFile }) => (
+    <Pressable
+      onPress={() => {
+        playNew(item);
+      }}
+      style={styles.item}
+    >
       <Text style={styles.title}>{item.name}</Text>
       <Text style={styles.subtitle}>Size: {item.size} bytes</Text>
-    </View>
+    </Pressable>
   );
 
   const loadMore = () => {
@@ -34,7 +47,7 @@ const ListAudioScreen = () => {
   }
 
   return (
-    <GestureHandlerRootView style={styles.container}>
+    <>
       <View style={CommonStyles.flex1}>
         <FlashList
           data={audioList}
@@ -48,8 +61,7 @@ const ListAudioScreen = () => {
           }
         />
       </View>
-      <MusicPlayer />
-    </GestureHandlerRootView>
+    </>
   );
 };
 

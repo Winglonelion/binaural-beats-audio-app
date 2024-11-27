@@ -1,5 +1,10 @@
 import React, { FC } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import CommonStyles from '@/styles/common';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
+import { MusicPlayerProvider } from '@/providers/MusicPlayerProvider';
 
 const queryClient = new QueryClient();
 
@@ -9,7 +14,18 @@ interface AppProviderProps {
 
 const AppProvider: FC<AppProviderProps> = ({ children }) => {
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <GestureHandlerRootView
+        style={[CommonStyles.flex1, { borderColor: 'blue', borderWidth: 1 }]}
+      >
+        <BottomSheetModalProvider>
+          <MusicPlayerProvider>
+            {children}
+            <MusicPlayer />
+          </MusicPlayerProvider>
+        </BottomSheetModalProvider>
+      </GestureHandlerRootView>
+    </QueryClientProvider>
   );
 };
 
