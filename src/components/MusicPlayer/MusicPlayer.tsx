@@ -185,6 +185,8 @@ const MusicPlayer = () => {
     };
   });
 
+  const { cover_img, author, name } = audio?.metadata ?? {};
+
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
@@ -199,7 +201,9 @@ const MusicPlayer = () => {
         {/* Cover Image (Shared Element Transition) */}
         <Animated.View style={[styles.coverContainer, coverImageStyle]}>
           <Image
-            source={require('@assets/images/zen.jpg')}
+            source={
+              cover_img ? { uri: cover_img } : require('@assets/images/zen.jpg')
+            }
             style={styles.coverImage}
           />
         </Animated.View>
@@ -212,7 +216,7 @@ const MusicPlayer = () => {
             ellipsizeMode={'tail'}
             style={[styles.title, titleStyle, spaceStyle]}
           >
-            {audio?.name || 'Unknown Song'}
+            {name || 'Unknown Song'}
           </Animated.Text>
           <Animated.Text
             adjustsFontSizeToFit
@@ -220,7 +224,7 @@ const MusicPlayer = () => {
             ellipsizeMode={'tail'}
             style={[styles.artist, artistStyle, spaceStyle]}
           >
-            Unknown Artist
+            {author ?? 'Unknown Artist'}
           </Animated.Text>
         </Animated.View>
 

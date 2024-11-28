@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -24,17 +25,30 @@ const ListAudioScreen = () => {
 
   const { playNew } = useMusicPlayer();
 
-  const renderItem = ({ item }: { item: AudioFile }) => (
-    <Pressable
-      onPress={() => {
-        playNew(item);
-      }}
-      style={styles.item}
-    >
-      <Text style={styles.title}>{item.name}</Text>
-      <Text style={styles.subtitle}>Size: {item.size} bytes</Text>
-    </Pressable>
-  );
+  const renderItem = ({ item }: { item: AudioFile }) => {
+    const { cover_img } = item.metadata;
+    return (
+      <Pressable
+        onPress={() => {
+          playNew(item);
+        }}
+        style={styles.item}
+      >
+        <Image
+          source={
+            cover_img ? { uri: cover_img } : require('@assets/images/zen.jpg')
+          }
+          style={styles.coverImage}
+        />
+        <View style={styles.contentText}>
+          <Text numberOfLines={2} style={styles.title}>
+            {item.metadata.name}
+          </Text>
+          <Text style={styles.subtitle}>{item.metadata.author}</Text>
+        </View>
+      </Pressable>
+    );
+  };
 
   const loadMore = () => {
     if (hasNextPage && !isFetchingNextPage) {
@@ -84,6 +98,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   item: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: 100,
     marginVertical: 16,
     marginHorizontal: 16,
     padding: 16,
@@ -95,6 +113,19 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
+  },
+  coverImage: {
+    width: 64,
+    height: 64,
+    borderRadius: 8,
+    resizeMode: 'cover',
+    overflow: 'hidden',
+  },
+  contentText: {
+    marginLeft: 16,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 16,
