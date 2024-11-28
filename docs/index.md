@@ -1,4 +1,9 @@
 
+---
+layout: default
+title: Binaural Beats Audio App
+---
+
 # Binaural Beats Audio App
 
 ## Overview
@@ -39,7 +44,6 @@ The frontend for this app is built using React Native. To set it up:
    yarn ios
    ```
 
-
 ## Backend Setup
 
 The backend for this project is implemented using Go. Follow these steps to set up and run the backend:
@@ -67,6 +71,8 @@ The backend for this project is implemented using Go. Follow these steps to set 
    go run main.go
    ```
 
+   Now, the service is running in `http://localhost:8080`
+
 6. **API Endpoint**:
    The backend serves audio files through the following endpoint:
    - `GET /api/audio` - Returns a list of available audio files.
@@ -82,14 +88,3 @@ To test the functionality:
 1. Open the app.
 2. Choose an audio file to play.
 3. Adjust the volume and observe the frequency visualizer.
-
-## Contribution Guidelines
-
-We welcome contributions! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Open a pull request.
