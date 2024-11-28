@@ -10,12 +10,12 @@ import { Image } from 'expo-image';
 
 import { FlashList } from '@shopify/flash-list';
 
+import OnlineOfflineAnimation from '@/components/Animation/OnlineOfflineAnimation';
+
 import { AudioFile } from '@/constants/audio.const';
 import { useAudioList } from '@/hooks/queries/audio';
 import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 import analyticsService from '@/services/analytics/analytics.service';
-
-import CommonStyles from '@/styles/common';
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -73,8 +73,10 @@ const ListAudioScreen = () => {
 
   return (
     <>
-      <View style={CommonStyles.flex1}>
+      <View style={styles.container}>
+        <OnlineOfflineAnimation />
         <FlashList
+          contentContainerStyle={styles.listContent}
           data={audioList}
           renderItem={renderItem}
           keyExtractor={(item) => item.name}
@@ -94,6 +96,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f9f9f9',
+    paddingTop: 16,
+  },
+  listContent: {
+    paddingTop: 24,
   },
   loading: {
     flex: 1,
