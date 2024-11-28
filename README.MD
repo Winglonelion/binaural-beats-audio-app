@@ -1,156 +1,95 @@
+
 # Binaural Beats Audio App
 
-## 🚀 Overview
+## Overview
+The Binaural Beats Audio App is designed to help users relax, focus, and meditate by providing a variety of binaural beats audio tracks. These tracks are scientifically proven to influence brainwave activity and promote mental well-being.
 
-The **Binaural Beats Audio App** is a React Native-based application designed to provide users with a relaxing, focused, and meditative experience through binaural beats. This project is part of a technical challenge to showcase full-stack mobile development skills.
+## Features
+- **Variety of Tracks**: Choose from a wide range of binaural beats tracks tailored for different purposes such as relaxation, focus, and meditation.
+- **Customizable Sessions**: Set the duration and intensity of your listening sessions.
+- **User-Friendly Interface**: Simple and intuitive design for easy navigation.
+- **Offline Access**: Download tracks for offline listening.
 
----
+## Frontend Setup
 
-## 🎯 Challenge Objectives
+The frontend for this app is built using React Native. To set it up:
 
-### Frontend
-
-- Write clean, efficient, and maintainable React Native code.
-- Create a simple UI with the following:
-  - **Play/Pause button**.
-  - **Volume slider**.
-  - **Simple animations** when audio is playing.
-- **Error Handling**: Manage loading and error states effectively.
-- **Bonus**:
-  - Support background audio playback.
-
-### Backend
-
-- Build an API endpoint to serve audio files.
-- Implement basic error handling for the API.
-- **Bonus**:
-  - Add audio streaming capabilities for better performance.
-
----
-
-## 🛠️ Features Implemented
-
-### Frontend
-
-- **Play/Pause Button**: Toggle audio playback seamlessly.
-- **Volume Slider**: Adjust volume dynamically.
-- **Frequency Visualizer** (Bonus): Display a simulated frequency spectrum while playing audio.
-- **Error Handling**: Inform users of errors with clear messages.
-- **Animations**: Smooth transitions for volume and visualizer components.
-- **Offline Mode** (Bonus): Allow users to save and play audio offline.
-
-### Backend
-
-- **API Endpoint**:
-  - Serve audio metadata.
-  - Provide audio files for playback.
-- **Error Handling**: Return specific error messages for missing files or other issues.
-- **Audio Streaming** (Bonus): Optimize playback with streaming.
-
-### Bonus Implementations
-
-- **Analytics Tracking**: Capture user interactions and events.
-- **Unit Tests**: Ensure the quality of the code with comprehensive test cases.
-
----
-
-## 💻 Installation & Setup
-
-### Prerequisites
-
-- Node.js >= 18.0
-- Yarn (or npm)
-- Expo CLI
-- A simple backend server to run the API
-
-### Frontend Setup
-
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/binaural_beats_audio_app.git
+   git clone https://github.com/Winglonelion/binaural-beats-audio-app.git
    ```
-2. Install dependencies:
+
+2. **Navigate to the project directory**:
+   ```bash
+   cd binaural-beats-audio-app
+   ```
+
+3. **Install dependencies**:
    ```bash
    yarn install
+   yarn pod
    ```
-3. Start the application:
+
+4. **Run the dev server of application**:
    ```bash
    yarn start
    ```
-
-### Backend Setup
-
-1. Start the backend server:
+5. **Run the application on iOS**
    ```bash
-   node server.js
+   yarn ios
    ```
-2. The backend will run at `http://localhost:8080/api`.
 
----
 
-## 🎬 Usage Guide
+## Backend Setup
 
-1. **Open the App**: Explore the user-friendly interface.
-2. **Select a Track**: Tap the Play button to start the binaural beats.
-3. **Adjust Volume**: Use the slider to control audio levels.
-4. **Frequency Visualizer**: Watch dynamic frequency visualizations.
-5. **Offline Playback**: Save tracks to play them without an internet connection.
+The backend for this project is implemented using Go. Follow these steps to set up and run the backend:
 
----
+1. **Install Go**:
+   Ensure you have Go installed on your machine. You can download it from [https://golang.org/dl/](https://golang.org/dl/).
 
-## 🧩 Technical Highlights
+2. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Winglonelion/binaural-beats-audio-services.git
+   ```
 
-- **Audio Processing**: Used Expo AV module for seamless audio playback.
-- **Error Handling**: Clear user feedback when:
-  - API fails to respond.
-  - Playback encounters issues.
-- **Scalability**: Backend is ready to handle thousands of users with audio streaming.
-- **Cross-Platform Performance**: Ensures smooth operation on both Android and iOS.
-- **Frequency Visualization**: Built with Skia for high-performance rendering.
+3. **Navigate to the backend directory**:
+   ```bash
+   cd binaural-beats-audio-services
+   ```
 
----
+4. **Install dependencies**:
+   ```bash
+   go mod tidy
+   ```
 
-## ✅ Checklist of Completed Features
+5. **Run the server**:
+   ```bash
+   go run main.go
+   ```
 
-- [x] **Play/Pause Button** working as expected.
-- [x] **Volume Slider** dynamically adjusts audio.
-- [x] **Frequency Visualizer** displays simulated spectrum.
-- [x] **Error Handling** notifies users of issues.
-- [ ] **Offline Mode** enables playback without internet.
-- [x] **Audio Streaming** optimizes playback from the backend.
-- [ ] **Background Playback** works seamlessly when switching apps.
-- [x] **Testing** ensures code quality with test cases.
-- [x] **Analytics** tracks user events and actions.
+6. **API Endpoint**:
+   The backend serves audio files through the following endpoint:
+   - `GET /api/audio` - Returns a list of available audio files.
+   - `GET /api/audio/{file_name}` - Streams the selected audio file.
 
----
+   Replace `localhost` and port in the frontend app with the backend's actual URL.
 
-## 🧪 Testing Approach
+For more details about the backend structure and configuration, refer to the [backend README](backend/README.md).
 
-- **Unit Tests**:
-  - Validate basic React Native components.
-  - Ensure the API returns correct data.
-- **Integration Tests**:
-  - Test the complete audio playback flow (Play, Pause, Volume).
-- **Manual Testing**:
-  - Verified functionality across multiple devices.
+## Testing
 
----
+To test the functionality:
+1. Open the app.
+2. Choose an audio file to play.
+3. Adjust the volume and observe the frequency visualizer.
 
-## 🤔 Challenges & Considerations
+## Contribution Guidelines
 
-1. **Audio Processing**:
-   - Efficiently handle audio streaming.
-   - Use simulated FFT data for the frequency visualizer.
-2. **Scalability**:
-   - Backend prepared for handling thousands of concurrent users.
-3. **Mobile Challenges**:
-   - Manage background audio states.
-   - Optimize animations for mobile performance.
+We welcome contributions! Please follow these steps to contribute:
 
----
-
-## 📞 Contact
-
-For any questions or feedback, please contact us at **support@binauralbeatsapp.com**.
-
----
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add some feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
