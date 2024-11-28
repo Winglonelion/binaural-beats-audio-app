@@ -6,6 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
 
+import { DownloadProvider } from '@/providers/DownloadProvider';
 import { MusicPlayerProvider } from '@/providers/MusicPlayerProvider';
 import { FirebaseAnalyticsAdapter } from '@/services/analytics/adapter/firebase-analytics-adapter';
 import analyticsService from '@/services/analytics/analytics.service';
@@ -31,12 +32,14 @@ const AppProvider: FC<AppProviderProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={CommonStyles.flex1}>
-        <MusicPlayerProvider>
-          <BottomSheetModalProvider>
-            {children}
-            <MusicPlayer />
-          </BottomSheetModalProvider>
-        </MusicPlayerProvider>
+        <DownloadProvider>
+          <MusicPlayerProvider>
+            <BottomSheetModalProvider>
+              {children}
+              <MusicPlayer />
+            </BottomSheetModalProvider>
+          </MusicPlayerProvider>
+        </DownloadProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );
