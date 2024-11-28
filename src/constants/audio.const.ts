@@ -4,6 +4,7 @@ export interface AudioMetadata {
   author: string;
   fft: string;
   cover_img: string;
+  thumbhash?: string;
 }
 
 export interface AudioFile {

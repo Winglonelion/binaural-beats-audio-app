@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import {
   Dimensions,
-  Image,
   Pressable,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Image } from 'expo-image';
 
 import { AntDesign } from '@expo/vector-icons';
 import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
@@ -185,7 +185,7 @@ const MusicPlayer = () => {
     };
   });
 
-  const { cover_img, author, name } = audio?.metadata ?? {};
+  const { cover_img, author, name, thumbhash = '' } = audio?.metadata ?? {};
 
   return (
     <BottomSheetModal
@@ -201,10 +201,13 @@ const MusicPlayer = () => {
         {/* Cover Image (Shared Element Transition) */}
         <Animated.View style={[styles.coverContainer, coverImageStyle]}>
           <Image
+            style={styles.coverImage}
             source={
               cover_img ? { uri: cover_img } : require('@assets/images/zen.jpg')
             }
-            style={styles.coverImage}
+            placeholder={{ thumbhash }}
+            contentFit="cover"
+            transition={200}
           />
         </Animated.View>
 

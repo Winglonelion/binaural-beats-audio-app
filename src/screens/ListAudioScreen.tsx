@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import {
   ActivityIndicator,
-  Image,
   Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { Image } from 'expo-image';
 
 import { FlashList } from '@shopify/flash-list';
 
@@ -26,7 +26,7 @@ const ListAudioScreen = () => {
   const { playNew } = useMusicPlayer();
 
   const renderItem = ({ item }: { item: AudioFile }) => {
-    const { cover_img } = item.metadata;
+    const { cover_img, thumbhash = '' } = item.metadata;
     return (
       <Pressable
         onPress={() => {
@@ -35,10 +35,13 @@ const ListAudioScreen = () => {
         style={styles.item}
       >
         <Image
+          style={styles.coverImage}
           source={
             cover_img ? { uri: cover_img } : require('@assets/images/zen.jpg')
           }
-          style={styles.coverImage}
+          placeholder={{ thumbhash }}
+          contentFit="cover"
+          transition={200}
         />
         <View style={styles.contentText}>
           <Text numberOfLines={2} style={styles.title}>
