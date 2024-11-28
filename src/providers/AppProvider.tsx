@@ -30,9 +30,7 @@ const AppProvider: FC<AppProviderProps> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <GestureHandlerRootView
-        style={[CommonStyles.flex1, { borderColor: 'blue', borderWidth: 1 }]}
-      >
+      <GestureHandlerRootView style={CommonStyles.flex1}>
         <MusicPlayerProvider>
           <BottomSheetModalProvider>
             {children}
