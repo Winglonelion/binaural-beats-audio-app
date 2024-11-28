@@ -2,17 +2,11 @@ import { StyleSheet, Dimensions, View, Text } from 'react-native';
 
 import React, { FC, useState } from 'react';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 const { width } = Dimensions.get('window');
 
-interface MusicSliderProps {
-  positionMillis: any;
-  durationMillis: any;
-}
-
-const MusicDurationProgress: FC<MusicSliderProps> = ({
-  positionMillis,
-  durationMillis,
-}) => {
+const MusicDurationProgress: FC = () => {
+  const { positionMillis, durationMillis } = useMusicPlayer();
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
 

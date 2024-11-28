@@ -18,12 +18,12 @@ const AppProvider: FC<AppProviderProps> = ({ children }) => {
       <GestureHandlerRootView
         style={[CommonStyles.flex1, { borderColor: 'blue', borderWidth: 1 }]}
       >
-        <BottomSheetModalProvider>
-          <MusicPlayerProvider>
+        <MusicPlayerProvider>
+          <BottomSheetModalProvider>
             {children}
             <MusicPlayer />
-          </MusicPlayerProvider>
-        </BottomSheetModalProvider>
+          </BottomSheetModalProvider>
+        </MusicPlayerProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );

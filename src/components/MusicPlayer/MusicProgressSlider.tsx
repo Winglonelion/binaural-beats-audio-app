@@ -3,19 +3,11 @@ import { StyleSheet, Dimensions } from 'react-native';
 import React, { FC, useState } from 'react';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 import Slider from '@react-native-community/slider';
+import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 const { width } = Dimensions.get('window');
 
-interface MusicSliderProps {
-  handleSeek: (value: number) => void;
-  positionMillis: any;
-  durationMillis: any;
-}
-
-const MusicProgressSlider: FC<MusicSliderProps> = ({
-  handleSeek,
-  positionMillis,
-  durationMillis,
-}) => {
+const MusicProgressSlider: FC = () => {
+  const { positionMillis, durationMillis, seek } = useMusicPlayer();
   const [sliderValue, setSliderValue] = useState(0);
 
   useAnimatedReaction(
@@ -24,6 +16,11 @@ const MusicProgressSlider: FC<MusicSliderProps> = ({
       runOnJS(setSliderValue)(value);
     },
   );
+
+  const handleSeek = async (value: number) => {
+    const position = Math.floor((value / 100) * durationMillis.value); // Ensure proper calculation
+    await seek(position);
+  };
 
   return (
     <Slider

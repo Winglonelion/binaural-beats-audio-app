@@ -14,12 +14,14 @@ import { SharedValue, useSharedValue } from 'react-native-reanimated';
 interface MusicPlayerContextProps {
   isPlaying: boolean;
   audio: AudioFile | null;
+  positionMillis: SharedValue<number>;
+  durationMillis: SharedValue<number>;
+  volumeValue: SharedValue<number>;
   playNew: (audio: AudioFile) => Promise<void>;
   togglePlayPause: () => Promise<void>;
   stop: () => Promise<void>;
   seek: (position: number) => Promise<void>;
-  positionMillis: SharedValue<number>;
-  durationMillis: SharedValue<number>;
+  updateVolume: (value: number) => Promise<void>;
 }
 
 const MusicPlayerContext = createContext<MusicPlayerContextProps | undefined>(
@@ -34,6 +36,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
   const soundRef = useRef<Audio.Sound | null>(null);
   const positionMillis = useSharedValue(0); // Shared value for playback position
   const durationMillis = useSharedValue(1); // Avoid division by zero
+  const volumeValue = useSharedValue(1); // Shared value for volume
 
   const unloadAudio = async () => {
     if (soundRef.current) {
@@ -42,12 +45,12 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  // Cleanup when component unmounts
-  useEffect(() => {
-    return () => {
-      unloadAudio();
-    };
-  }, []);
+  const updateVolume = async (value: number) => {
+    volumeValue.value = value; // Update shared value
+    if (soundRef.current) {
+      await soundRef.current.setVolumeAsync(value);
+    }
+  };
 
   const playNew = async (_audio: AudioFile) => {
     try {
@@ -73,6 +76,17 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
             positionMillis.value = status.positionMillis || 0;
             durationMillis.value = status.durationMillis || 1;
           }
+
+          if (
+            status.isLoaded &&
+            !status.isBuffering &&
+            'didJustFinish' in status &&
+            status.didJustFinish
+          ) {
+            console.log('Playback finished', status);
+            setIsPlaying(false);
+            positionMillis.value = 0; // Reset position to the beginning
+          }
         });
 
         soundRef.current = sound;
@@ -80,10 +94,20 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         setIsPlaying(true);
       } else {
         await soundRef.current?.playAsync();
+
         setIsPlaying(true);
       }
     } catch (error) {
       console.error('Error playing audio:', error);
+    }
+  };
+  const replay = async () => {
+    try {
+      if (positionMillis.value >= durationMillis.value - 1000) {
+        await soundRef.current?.setPositionAsync(0);
+      }
+    } catch (error) {
+      console.error('Error resuming audio:', error);
     }
   };
 
@@ -93,6 +117,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         await soundRef.current?.pauseAsync();
         setIsPlaying(false);
       } else {
+        replay();
         await soundRef.current?.playAsync();
         setIsPlaying(true);
       }
@@ -123,6 +148,13 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  // Cleanup when component unmounts
+  useEffect(() => {
+    return () => {
+      unloadAudio();
+    };
+  }, []);
+
   return (
     <MusicPlayerContext.Provider
       value={{
@@ -134,6 +166,8 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         audio,
         positionMillis,
         durationMillis,
+        volumeValue,
+        updateVolume,
       }}
     >
       {children}

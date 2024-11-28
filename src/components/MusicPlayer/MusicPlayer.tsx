@@ -13,30 +13,22 @@ import Animated, {
   useSharedValue,
   useAnimatedStyle,
   interpolate,
-  useAnimatedReaction,
-  runOnJS,
 } from 'react-native-reanimated';
 import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 import MusicProgressSlider from '@/components/MusicPlayer/MusicProgressSlider';
 import MusicDurationProgress from '@/components/MusicPlayer/MusicDurationProgress';
+import MusicVolumeSlider from '@/components/MusicPlayer/MusicVolumeSlider';
+import MusicFFTVisualizer from '@/components/MusicPlayer/MusicFFTVisualizer';
 
 const { width, height } = Dimensions.get('window');
 
 const MusicPlayer = () => {
-  const {
-    togglePlayPause,
-    seek,
-    isPlaying,
-    audio,
-    stop,
-    positionMillis,
-    durationMillis,
-  } = useMusicPlayer();
+  const { togglePlayPause, isPlaying, audio, stop } = useMusicPlayer();
 
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const animatedValue = useSharedValue(0);
 
-  const snapPoints = useMemo(() => [0.15 * height, 0.6 * height, height], []);
+  const snapPoints = useMemo(() => [0.15 * height, 0.65 * height, height], []);
   const interpolateRange = useMemo(() => {
     return [
       // height full = height - snap 2 = 0
@@ -68,25 +60,6 @@ const MusicPlayer = () => {
     // Stop audio when BottomSheet is closed
     await stop();
   };
-
-  const handleSeek = async (value: number) => {
-    const position = Math.floor((value / 100) * durationMillis.value); // Ensure proper calculation
-    await seek(position);
-  };
-
-  const logValue = (value: number) => {
-    console.log('Value:', value);
-  };
-
-  /**
-   * debug: useAnimatedReaction
-   */
-  useAnimatedReaction(
-    () => animatedValue.value || 0, // Derived value
-    (value) => {
-      runOnJS(logValue)(value);
-    },
-  );
 
   // Animated styles for Cover Image
   const coverImageStyle = useAnimatedStyle(() => {
@@ -266,16 +239,14 @@ const MusicPlayer = () => {
 
         {/* Progress Slider and Duration */}
         <View style={styles.progressContainer}>
-          <MusicProgressSlider
-            positionMillis={positionMillis}
-            durationMillis={durationMillis}
-            handleSeek={handleSeek}
-          />
-          <MusicDurationProgress
-            positionMillis={positionMillis}
-            durationMillis={durationMillis}
-          />
+          <MusicProgressSlider />
+          <MusicDurationProgress />
         </View>
+
+        {/* Volume Slider */}
+        <MusicVolumeSlider />
+        <MusicFFTVisualizer />
+
         <View style={styles.closeBtn}>
           <Pressable onPress={handleStop}>
             <AntDesign name="closecircle" size={12} color="#ddd" />
