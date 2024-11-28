@@ -1,5 +1,6 @@
 // src/network/AxiosNetworkClient.ts
 import axios, { AxiosInstance } from 'axios';
+
 import { INetworkClient } from './network-client.interface';
 
 export class AxiosNetworkClient implements INetworkClient {

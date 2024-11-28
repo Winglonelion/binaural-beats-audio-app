@@ -1,8 +1,9 @@
-import { StyleSheet, Dimensions } from 'react-native';
-
 import React, { FC, useState } from 'react';
-import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import { Dimensions, StyleSheet } from 'react-native';
+
 import Slider from '@react-native-community/slider';
+import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+
 import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 const { width } = Dimensions.get('window');
 

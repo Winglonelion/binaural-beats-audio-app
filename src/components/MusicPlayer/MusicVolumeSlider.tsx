@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
+
 import { Ionicons } from '@expo/vector-icons';
-import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
   runOnJS,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
+
 import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 
 const { width } = Dimensions.get('window');

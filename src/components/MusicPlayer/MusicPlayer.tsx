@@ -1,24 +1,27 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import {
-  View,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
   Dimensions,
+  Image,
   Pressable,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
+
 import { AntDesign } from '@expo/vector-icons';
+import { BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
   interpolate,
+  useAnimatedStyle,
+  useSharedValue,
 } from 'react-native-reanimated';
-import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
-import MusicProgressSlider from '@/components/MusicPlayer/MusicProgressSlider';
+
 import MusicDurationProgress from '@/components/MusicPlayer/MusicDurationProgress';
-import MusicVolumeSlider from '@/components/MusicPlayer/MusicVolumeSlider';
 import MusicFFTVisualizer from '@/components/MusicPlayer/MusicFFTVisualizer';
+import MusicProgressSlider from '@/components/MusicPlayer/MusicProgressSlider';
+import MusicVolumeSlider from '@/components/MusicPlayer/MusicVolumeSlider';
+
+import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 
 const { width, height } = Dimensions.get('window');
 

@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
   ActivityIndicator,
   Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
+
 import { FlashList } from '@shopify/flash-list';
-import { useAudioList } from '@/hooks/queries/audio';
-import CommonStyles from '@/styles/common';
-import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
+
 import { AudioFile } from '@/constants/audio.const';
+import { useAudioList } from '@/hooks/queries/audio';
+import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
+import analyticsService from '@/services/analytics/analytics.service';
+
+import CommonStyles from '@/styles/common';
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -37,6 +41,10 @@ const ListAudioScreen = () => {
       fetchNextPage();
     }
   };
+
+  useEffect(() => {
+    analyticsService.trackScreenView('ListAudioScreen');
+  }, []);
 
   if (isLoading) {
     return (

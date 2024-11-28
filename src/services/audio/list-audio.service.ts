@@ -13,6 +13,5 @@ export const fetchAudioList = async ({
   const response = await apiService.get('/audio', {
     params,
   });
-  console.log('🚀 ~ response:', response);
   return response?.data;
 };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+
 import { Canvas, RoundedRect } from '@shopify/react-native-skia';
 
 // Function to generate fake FFT data

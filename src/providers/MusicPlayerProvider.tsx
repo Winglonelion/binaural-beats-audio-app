@@ -1,15 +1,19 @@
-import { Audio } from 'expo-av';
 import React, {
   createContext,
-  useState,
-  useContext,
   ReactNode,
+  useContext,
   useEffect,
   useRef,
+  useState,
 } from 'react';
-import { ENV } from '@/constants/ENV';
-import { AudioFile } from '@/constants/audio.const';
+import { Audio } from 'expo-av';
+
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
+
+import { AudioFile } from '@/constants/audio.const';
+import { ENV } from '@/constants/ENV';
+import analyticsService from '@/services/analytics/analytics.service';
+import logService from '@/services/log/log.service';
 
 interface MusicPlayerContextProps {
   isPlaying: boolean;
@@ -54,6 +58,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
 
   const playNew = async (_audio: AudioFile) => {
     try {
+      analyticsService.logEvent('play', { audio: _audio.name });
       if (_audio.name !== audio?.name) {
         if (soundRef.current) {
           await unloadAudio();
@@ -83,7 +88,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
             'didJustFinish' in status &&
             status.didJustFinish
           ) {
-            console.log('Playback finished', status);
+            logService.log('Playback finished', status);
             setIsPlaying(false);
             positionMillis.value = 0; // Reset position to the beginning
           }
@@ -98,16 +103,17 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         setIsPlaying(true);
       }
     } catch (error) {
-      console.error('Error playing audio:', error);
+      logService.error('Error playing audio:', error);
     }
   };
   const replay = async () => {
+    analyticsService.logEvent('replay', { audio: audio?.name });
     try {
       if (positionMillis.value >= durationMillis.value - 1000) {
         await soundRef.current?.setPositionAsync(0);
       }
     } catch (error) {
-      console.error('Error resuming audio:', error);
+      logService.error('Error resuming audio:', error);
     }
   };
 
@@ -122,7 +128,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         setIsPlaying(true);
       }
     } catch (error) {
-      console.error('Error pausing audio:', error);
+      logService.error('Error pausing audio:', error);
     }
   };
 
@@ -131,12 +137,13 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
       await soundRef.current?.setPositionAsync(position);
       positionMillis.value = position;
     } catch (error) {
-      console.error('Error seeking audio:', error);
+      logService.error('Error seeking audio:', error);
     }
   };
 
   const stop = async () => {
     try {
+      analyticsService.logEvent('stop', { audio: audio?.name });
       await soundRef.current?.stopAsync();
       await unloadAudio();
       soundRef.current = null;
@@ -144,7 +151,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
       setIsPlaying(false);
       positionMillis.value = 0;
     } catch (error) {
-      console.error('Error closing audio:', error);
+      logService.error('Error closing audio:', error);
     }
   };
 

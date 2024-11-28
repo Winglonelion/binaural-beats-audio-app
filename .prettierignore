@@ -1,0 +1,11 @@
+node_modules/
+dist/
+build/
+android/
+ios/
+coverage/
+.vscode/
+.expo/
+*.lock
+tsconfig.json
+*.md

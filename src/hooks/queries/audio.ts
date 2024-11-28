@@ -1,5 +1,6 @@
-import { fetchAudioList } from '@/services/audio/list-audio.service';
 import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { fetchAudioList } from '@/services/audio/list-audio.service';
 
 export const useAudioList = () => {
   return useInfiniteQuery({
