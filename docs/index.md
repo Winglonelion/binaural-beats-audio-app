@@ -1,11 +1,11 @@
 
 # **Binaural Beats Audio App White Paper**
 
-<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
+<img src="./images/img_1.png" alt="Overview Image" width="30%" />
 
-<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
+<img src="./images/img_1.png" alt="Overview Image" width="30%" />
 
-<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
+<img src="./images/img_1.png" alt="Overview Image" width="30%" />
 
 ## **Executive Summary**
 
