@@ -9,7 +9,7 @@ import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 
 import { AudioFile } from '@/constants/audio.const';
 import { ENV } from '@/constants/ENV';
-import { useFileInfo } from '@/hooks/files/useFileInfo';
+import { useFileInfo } from '@/hooks/files/use-file-info';
 import { useDownload } from '@/providers/DownloadProvider'; // Import DownloadProvider
 import { useMusicPlayer } from '@/providers/MusicPlayerProvider';
 

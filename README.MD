@@ -1,14 +1,18 @@
 
 # Binaural Beats Audio App
 
+Checkout the White Paper of Project here: https://winglonelion.github.io/binaural-beats-audio-app/
+
 ## Overview
 The Binaural Beats Audio App is designed to help users relax, focus, and meditate by providing a variety of binaural beats audio tracks. These tracks are scientifically proven to influence brainwave activity and promote mental well-being.
 
 ## Features
-- **Variety of Tracks**: Choose from a wide range of binaural beats tracks tailored for different purposes such as relaxation, focus, and meditation.
-- **Customizable Sessions**: Set the duration and intensity of your listening sessions.
-- **User-Friendly Interface**: Simple and intuitive design for easy navigation.
-- **Offline Access**: Download tracks for offline listening.
+- **Streaming Audio with Range Header Support**: The app supports audio streaming with `Range` headers, allowing for optimized bandwidth usage and reducing load on the server by fetching only the necessary parts of the audio file.
+- **Offline and Background Playback**: Users can download audio tracks for offline use and continue playing them even in the background, ensuring a seamless listening experience.
+- **Engaging User Interface**: The app features a user-friendly design with smooth micro-interactions and delightful animations powered by **Reanimated 3** and **Rive**, delivering an exceptional user experience.
+- **Powerful Analytics System**: A robust analytics system is implemented to track user interactions. It is highly extensible and compatible with various third-party analytics platforms, such as Firebase Analytics.
+- **Well-Designed Architecture**: The app's architecture is modular, making it easy to extend and replace components without affecting the overall system.
+
 
 ## Frontend Setup
 
@@ -44,37 +48,53 @@ The frontend for this app is built using React Native. To set it up:
 
 The backend for this project is implemented using Go. Follow these steps to set up and run the backend:
 
-1. **Install Go**:
-   Ensure you have Go installed on your machine. You can download it from [https://golang.org/dl/](https://golang.org/dl/).
-
-2. **Clone the repository**:
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/Winglonelion/binaural-beats-audio-services.git
    ```
 
-3. **Navigate to the backend directory**:
+1. **Navigate to the backend directory**:
    ```bash
    cd binaural-beats-audio-services
    ```
 
-4. **Install dependencies**:
+1.  **Quick start backend with Docker**
+      > Ensure your docker engine is running
+      ```bash
+      docker-compose up -d
+      ```
+
+   ---
+   **Or run GO server direct in your machine**
+
+1. **Navigate to the backend directory**:
+   ```bash
+   cd binaural-beats-audio-services
+   ```
+1. **Install Go**:
+   Ensure you have Go installed on your machine. You can download it from [https://golang.org/dl/](https://golang.org/dl/).
+
+
+
+1. **Install dependencies**:
    ```bash
    go mod tidy
    ```
 
-5. **Run the server**:
+1. **Run the server**:
    ```bash
    go run main.go
    ```
 
-6. **API Endpoint**:
+## **API Endpoint**:
    The backend serves audio files through the following endpoint:
    - `GET /api/audio` - Returns a list of available audio files.
    - `GET /api/audio/{file_name}` - Streams the selected audio file.
+   - `GET /api/download/{file_name}` - Download selected audio file.
 
    Replace `localhost` and port in the frontend app with the backend's actual URL.
 
-For more details about the backend structure and configuration, refer to the [backend README](backend/README.md).
+For more details about the backend structure and configuration, refer to the [Backend README](backend/README.md).
 
 ## Testing
 
@@ -82,14 +102,3 @@ To test the functionality:
 1. Open the app.
 2. Choose an audio file to play.
 3. Adjust the volume and observe the frequency visualizer.
-
-## Contribution Guidelines
-
-We welcome contributions! Please follow these steps to contribute:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes.
-4. Commit your changes (`git commit -m 'Add some feature'`).
-5. Push to the branch (`git push origin feature-branch`).
-6. Open a pull request.
