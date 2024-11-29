@@ -159,19 +159,22 @@ go mod tidy
 
 Start the backend server:
 
-```bash
-go run main.go
-```
+   ```bash
+   go run main.go
+   ```
 
    The server will be available at `http://localhost:8080`.
 
 **5. API Endpoints**:
-   - `GET /api/audio` - Returns a list of available audio files.
-   - `GET /api/audio/{file_name}` - Streams the selected audio file.
-   - `GET /api/download/{file_name}` - Downloads the audio file.
 
-      For more detailed information, please read [Backend README](https://github.com/Winglonelion/binaural-beats-audio-services)
----
+- `GET /api/audio` - Returns a list of available audio files.
+- `GET /api/audio/{file_name}` - Streams the selected audio file.
+- `GET /api/download/{file_name}` - Downloads the audio file.
+
+
+For more detailed information, please read [Backend README](https://github.com/Winglonelion/binaural-beats-audio-services)
+
+
 
 ## **Future Enhancements**
 
