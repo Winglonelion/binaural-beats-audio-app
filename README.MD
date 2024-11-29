@@ -46,7 +46,7 @@ The frontend for this app is built using React Native. To set it up:
 
 ## Backend Setup
 
-The backend for this project is implemented using Go. And already deployed in Render at: https://binaural-beats-audio-services.onrender.com
+The backend for this project is implemented using Go. And already deployed in Railway at: https://binaural-beats-audio-services-production.up.railway.app/
 
 So, it could be easy to skip Backend setup on the case want focus on frontend only.
 

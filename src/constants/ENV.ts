@@ -8,5 +8,6 @@
  */
 
 export const ENV = {
-  API_URL: 'http://localhost:8080/api',
+  API_URL:
+    'https://binaural-beats-audio-services-production.up.railway.app/api',
 };
