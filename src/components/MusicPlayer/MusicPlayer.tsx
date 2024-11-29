@@ -126,7 +126,7 @@ const MusicPlayer = () => {
     const fontSize = interpolate(
       animatedValue.value,
       interpolateRange,
-      [20, 20, 12],
+      [24, 24, 14],
     );
 
     return {
@@ -138,7 +138,7 @@ const MusicPlayer = () => {
     const fontSize = interpolate(
       animatedValue.value,
       interpolateRange,
-      [12, 12, 8],
+      [12, 12, 10],
     );
 
     return {
@@ -215,7 +215,7 @@ const MusicPlayer = () => {
         <Animated.View style={[styles.textContainer, textContainerStyle]}>
           <Animated.Text
             adjustsFontSizeToFit
-            numberOfLines={3}
+            numberOfLines={2}
             ellipsizeMode={'tail'}
             style={[styles.title, titleStyle, spaceStyle]}
           >
@@ -293,6 +293,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   textContainer: {
+    paddingTop: 6,
+    paddingLeft: 4,
     position: 'absolute',
     alignSelf: 'flex-end',
   },

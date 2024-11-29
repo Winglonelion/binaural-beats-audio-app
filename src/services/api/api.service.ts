@@ -11,6 +11,12 @@ export class APIService {
   static getInstance(): APIService {
     if (!APIService.instance) {
       const apiService = new APIService();
+      /**
+       * Use AxiosNetworkClient by default
+       * this design allows us to easily switch to another network client
+       * without changing the code that uses the APIService
+       * like Fetch, Axios, etc.
+       */
       apiService.useClient(new AxiosNetworkClient(ENV.API_URL));
       APIService.instance = apiService;
     }

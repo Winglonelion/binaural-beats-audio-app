@@ -1,18 +1,20 @@
 import React, {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 
 import { AudioFile } from '@/constants/audio.const';
 import { ENV } from '@/constants/ENV';
 import analyticsService from '@/services/analytics/analytics.service';
+import fileService from '@/services/download/file.service';
 import logService from '@/services/log/log.service';
 
 interface MusicPlayerContextProps {
@@ -56,32 +58,68 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-  const playNew = async (_audio: AudioFile) => {
-    try {
-      analyticsService.logEvent('play', { audio: _audio.name });
-      if (_audio.name !== audio?.name) {
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      playThroughEarpieceAndroid: false,
+    });
+  }, []);
+
+  const playNew = useCallback(
+    async (_audio: AudioFile) => {
+      try {
+        analyticsService.logEvent('play', { audio: _audio.name });
+
+        /**
+         * If the same audio is already playing, just resume it
+         */
+        if (_audio.name === audio?.name) {
+          await soundRef.current?.playAsync();
+          setIsPlaying(true);
+          return;
+        }
+
+        /**
+         * Unload the current audio before playing a new one
+         */
         if (soundRef.current) {
           await unloadAudio();
         }
-        Audio.setAudioModeAsync({
-          allowsRecordingIOS: false,
-          staysActiveInBackground: true,
-          playsInSilentModeIOS: true, // Chạy âm thanh ngay cả khi thiết bị ở chế độ im lặng
-        });
 
-        const audioUri = `${ENV.API_URL}/audio/${_audio.name}`;
+        /**
+         * Get the file info to check if the audio file exists
+         */
+        const fileInfo = await fileService.getFileInfo(_audio.name);
 
+        const audioUri = fileInfo?.exists
+          ? fileInfo.uri
+          : `${ENV.API_URL}/audio/${_audio.name}`;
+
+        /**
+         * Load the audio file and play it
+         */
         const { sound } = await Audio.Sound.createAsync(
           { uri: audioUri },
           { shouldPlay: true, volume: 1, isMuted: false },
         );
 
+        /**
+         * Update the position and duration of the audio
+         */
         sound.setOnPlaybackStatusUpdate((status) => {
           if (status.isLoaded) {
             positionMillis.value = status.positionMillis || 0;
             durationMillis.value = status.durationMillis || 1;
           }
 
+          /**
+           * When the audio finishes playing, reset the position to the beginning
+           */
           if (
             status.isLoaded &&
             !status.isBuffering &&
@@ -97,16 +135,14 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
         soundRef.current = sound;
         setAudio(_audio);
         setIsPlaying(true);
-      } else {
-        await soundRef.current?.playAsync();
-
-        setIsPlaying(true);
+      } catch (error) {
+        logService.error('Error playing audio:', error);
       }
-    } catch (error) {
-      logService.error('Error playing audio:', error);
-    }
-  };
-  const replay = async () => {
+    },
+    [audio?.name, durationMillis, positionMillis],
+  );
+
+  const replay = useCallback(async () => {
     analyticsService.logEvent('replay', { audio: audio?.name });
     try {
       if (positionMillis.value >= durationMillis.value - 1000) {
@@ -115,9 +151,9 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       logService.error('Error resuming audio:', error);
     }
-  };
+  }, [audio?.name, durationMillis, positionMillis]);
 
-  const togglePlayPause = async () => {
+  const togglePlayPause = useCallback(async () => {
     try {
       if (isPlaying) {
         await soundRef.current?.pauseAsync();
@@ -130,18 +166,21 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       logService.error('Error pausing audio:', error);
     }
-  };
+  }, [isPlaying, replay]);
 
-  const seek = async (position: number) => {
-    try {
-      await soundRef.current?.setPositionAsync(position);
-      positionMillis.value = position;
-    } catch (error) {
-      logService.error('Error seeking audio:', error);
-    }
-  };
+  const seek = useCallback(
+    async (position: number) => {
+      try {
+        await soundRef.current?.setPositionAsync(position);
+        positionMillis.value = position;
+      } catch (error) {
+        logService.error('Error seeking audio:', error);
+      }
+    },
+    [positionMillis],
+  );
 
-  const stop = async () => {
+  const stop = useCallback(async () => {
     try {
       analyticsService.logEvent('stop', { audio: audio?.name });
       await soundRef.current?.stopAsync();
@@ -153,7 +192,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     } catch (error) {
       logService.error('Error closing audio:', error);
     }
-  };
+  }, [audio?.name, positionMillis]);
 
   // Cleanup when component unmounts
   useEffect(() => {

@@ -16,6 +16,9 @@
     },
     "ios": {
       "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      },
       "bundleIdentifier": "com.william.binaural-beats-audio-app"
     },
     "android": {
@@ -23,6 +26,11 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
+      "permissions": ["FOREGROUND_SERVICE"],
+      "config": {
+        "googleServicesFile": "./google-services.json"
+      },
+      "playStoreUrl": "",
       "package": "com.william.binaural_beats_audio_app"
     },
     "web": {
@@ -37,7 +45,24 @@
         {
           "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
-      ]
+      ],
+      [
+        "expo-sqlite",
+        {
+          "enableFTS": true,
+          "useSQLCipher": true,
+          "android": {
+            "enableFTS": false,
+            "useSQLCipher": false
+          },
+          "ios": {
+            "customBuildFlags": [
+              "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
+            ]
+          }
+        }
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true
