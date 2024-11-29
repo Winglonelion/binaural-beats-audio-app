@@ -1,11 +1,22 @@
 
 # **Binaural Beats Audio App White Paper**
 
+
+
+<div style="display: flex; justify-content: center;">
+  <video autoplay muted loop width="30%" controls>
+    <source src="./videos/demo.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 10px;">
 <img src="./images/img_1.png" alt="Overview Image" width="30%" />
 
-<img src="./images/img_1.png" alt="Overview Image" width="30%" />
+<img src="./images/img_2.png" alt="Overview Image" width="30%" />
 
-<img src="./images/img_1.png" alt="Overview Image" width="30%" />
+<img src="./images/img_3.png" alt="Overview Image" width="30%" />
+</div>
 
 ## **Executive Summary**
 
