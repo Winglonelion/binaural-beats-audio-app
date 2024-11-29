@@ -7,7 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Audio } from 'expo-av';
+import { Audio, InterruptionModeAndroid, InterruptionModeIOS } from 'expo-av';
 
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 
@@ -58,57 +58,83 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
+  useEffect(() => {
+    Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+      staysActiveInBackground: true,
+      playsInSilentModeIOS: true,
+      interruptionModeIOS: InterruptionModeIOS.DoNotMix,
+      shouldDuckAndroid: true,
+      interruptionModeAndroid: InterruptionModeAndroid.DoNotMix,
+      playThroughEarpieceAndroid: false,
+    });
+  }, []);
+
   const playNew = useCallback(
     async (_audio: AudioFile) => {
       try {
         analyticsService.logEvent('play', { audio: _audio.name });
-        if (_audio.name !== audio?.name) {
-          if (soundRef.current) {
-            await unloadAudio();
-          }
-          Audio.setAudioModeAsync({
-            allowsRecordingIOS: false,
-            staysActiveInBackground: true,
-            playsInSilentModeIOS: true,
-          });
 
-          const fileInfo = await fileService.getFileInfo(_audio.name);
-
-          const audioUri = fileInfo?.exists
-            ? fileInfo.uri
-            : `${ENV.API_URL}/audio/${_audio.name}`;
-
-          const { sound } = await Audio.Sound.createAsync(
-            { uri: audioUri },
-            { shouldPlay: true, volume: 1, isMuted: false },
-          );
-
-          sound.setOnPlaybackStatusUpdate((status) => {
-            if (status.isLoaded) {
-              positionMillis.value = status.positionMillis || 0;
-              durationMillis.value = status.durationMillis || 1;
-            }
-
-            if (
-              status.isLoaded &&
-              !status.isBuffering &&
-              'didJustFinish' in status &&
-              status.didJustFinish
-            ) {
-              logService.log('Playback finished', status);
-              setIsPlaying(false);
-              positionMillis.value = 0; // Reset position to the beginning
-            }
-          });
-
-          soundRef.current = sound;
-          setAudio(_audio);
-          setIsPlaying(true);
-        } else {
+        /**
+         * If the same audio is already playing, just resume it
+         */
+        if (_audio.name === audio?.name) {
           await soundRef.current?.playAsync();
-
           setIsPlaying(true);
+          return;
         }
+
+        /**
+         * Unload the current audio before playing a new one
+         */
+        if (soundRef.current) {
+          await unloadAudio();
+        }
+
+        /**
+         * Get the file info to check if the audio file exists
+         */
+        const fileInfo = await fileService.getFileInfo(_audio.name);
+
+        const audioUri = fileInfo?.exists
+          ? fileInfo.uri
+          : `${ENV.API_URL}/audio/${_audio.name}`;
+
+        /**
+         * Load the audio file and play it
+         */
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: audioUri },
+          { shouldPlay: true, volume: 1, isMuted: false },
+        );
+
+        /**
+         * Update the position and duration of the audio
+         */
+        sound.setOnPlaybackStatusUpdate((status) => {
+          if (status.isLoaded) {
+            positionMillis.value = status.positionMillis || 0;
+            durationMillis.value = status.durationMillis || 1;
+          }
+
+          /**
+           * When the audio finishes playing, reset the position to the beginning
+           */
+          if (
+            status.isLoaded &&
+            !status.isBuffering &&
+            'didJustFinish' in status &&
+            status.didJustFinish
+          ) {
+            logService.log('Playback finished', status);
+            setIsPlaying(false);
+            positionMillis.value = 0; // Reset position to the beginning
+          }
+        });
+
+        soundRef.current = sound;
+        setAudio(_audio);
+        setIsPlaying(true);
       } catch (error) {
         logService.error('Error playing audio:', error);
       }
