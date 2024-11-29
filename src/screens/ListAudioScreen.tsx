@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
@@ -8,11 +8,25 @@ import AudioItem from '@/components/List/AudioItem';
 
 import { AudioFile } from '@/constants/audio.const';
 import { useAudioList } from '@/hooks/queries/audio';
+import useOffline from '@/hooks/utils/use-offline';
+import { useDownloadedDB } from '@/providers/DownloadedDBProvider';
 import analyticsService from '@/services/analytics/analytics.service';
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useAudioList();
+  const [offlineData, setOfflineData] = useState<AudioFile[]>([]);
+  const isOffline = useOffline();
+
+  const { getDownloadedAudios } = useDownloadedDB();
+
+  useEffect(() => {
+    if (isOffline) {
+      getDownloadedAudios().then((audios) => {
+        setOfflineData(audios);
+      });
+    }
+  }, [getDownloadedAudios, isOffline]);
 
   const audioList = useMemo(
     () => data?.pages.flatMap((page) => page.files) || [],
@@ -49,7 +63,7 @@ const ListAudioScreen = () => {
         <OnlineOfflineAnimation />
         <FlashList
           contentContainerStyle={styles.listContent}
-          data={audioList}
+          data={isOffline ? offlineData : audioList}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           estimatedItemSize={100}

@@ -12,6 +12,7 @@ export interface AudioFile {
   size: number;
   last_modified: string;
   metadata: AudioMetadata;
+  local_uri?: string;
 }
 
 export interface AudioResponse {

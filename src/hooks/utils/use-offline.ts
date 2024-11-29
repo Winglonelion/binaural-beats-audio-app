@@ -1,19 +1,9 @@
-import { useEffect, useState } from 'react';
-
-import NetInfo from '@react-native-community/netinfo';
+import { useNetworkState } from 'expo-network';
 
 function useOffline() {
-  const [isOffline, setIsOffline] = useState(false);
+  const networkState = useNetworkState();
 
-  useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener((state) => {
-      setIsOffline(!state.isConnected);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  return isOffline;
+  return networkState.isInternetReachable !== true;
 }
 
 export default useOffline;

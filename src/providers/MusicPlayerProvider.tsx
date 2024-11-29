@@ -8,13 +8,13 @@ import React, {
   useState,
 } from 'react';
 import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
 
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 
 import { AudioFile } from '@/constants/audio.const';
 import { ENV } from '@/constants/ENV';
 import analyticsService from '@/services/analytics/analytics.service';
+import fileService from '@/services/download/file.service';
 import logService from '@/services/log/log.service';
 
 interface MusicPlayerContextProps {
@@ -23,10 +23,7 @@ interface MusicPlayerContextProps {
   positionMillis: SharedValue<number>;
   durationMillis: SharedValue<number>;
   volumeValue: SharedValue<number>;
-  playNew: (
-    audio: AudioFile,
-    fileInfo: FileSystem.FileInfo | undefined,
-  ) => Promise<void>;
+  playNew: (audio: AudioFile) => Promise<void>;
   togglePlayPause: () => Promise<void>;
   stop: () => Promise<void>;
   seek: (position: number) => Promise<void>;
@@ -62,7 +59,7 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const playNew = useCallback(
-    async (_audio: AudioFile, fileInfo?: FileSystem.FileInfo) => {
+    async (_audio: AudioFile) => {
       try {
         analyticsService.logEvent('play', { audio: _audio.name });
         if (_audio.name !== audio?.name) {
@@ -74,6 +71,8 @@ export const MusicPlayerProvider: React.FC<{ children: ReactNode }> = ({
             staysActiveInBackground: true,
             playsInSilentModeIOS: true,
           });
+
+          const fileInfo = await fileService.getFileInfo(_audio.name);
 
           const audioUri = fileInfo?.exists
             ? fileInfo.uri

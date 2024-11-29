@@ -2,12 +2,15 @@ import React, { createContext, useContext } from 'react';
 
 import { SharedValue, useSharedValue } from 'react-native-reanimated';
 
+import { AudioFile } from '@/constants/audio.const';
+import { useDownloadedDB } from '@/providers/DownloadedDBProvider';
 import downloadService from '@/services/download/download.service';
+import fileService from '@/services/download/file.service';
 
 // Define the DownloadContextProps interface
 export interface DownloadContextProps {
   downloadProgress: SharedValue<{ [key: string]: number }>; // Shared value for download progress
-  startDownload: (id: string, url: string, fileName: string) => void; // Start a new download
+  startDownload: (id: string, url: string, audio: AudioFile) => void; // Start a new download
   cancelDownload: (id: string) => void; // Cancel a specific download
   cancelAllDownloads: () => void; // Cancel all ongoing downloads
   getProgressById: (id: string) => number; // Retrieve progress for a specific download
@@ -22,16 +25,26 @@ export const DownloadProvider = ({
 }) => {
   // Initialize shared value to store progress for multiple downloads
   const downloadProgress = useSharedValue<{ [key: string]: number }>({});
+  const { addDownloadedAudio } = useDownloadedDB();
 
   // Start downloading a file
-  const startDownload = (id: string, url: string, fileName: string) => {
-    downloadService.startDownload({ id, url, fileName }, (progress) => {
-      // Update the progress of the file in the shared value
-      downloadProgress.value = {
-        ...downloadProgress.value,
-        [id]: progress,
-      };
-    });
+  const startDownload = (id: string, url: string, audio: AudioFile) => {
+    downloadService.startDownload(
+      { id, url, fileName: audio.name },
+      async (progress) => {
+        // If the download is complete, add the file to the SQLite database
+        if (progress === 100) {
+          const fileInfo = await fileService.getFileInfo(audio.name);
+          fileInfo.exists && addDownloadedAudio(audio, fileInfo.uri);
+        }
+
+        // Update the progress of the file in the shared value
+        downloadProgress.value = {
+          ...downloadProgress.value,
+          [id]: progress,
+        };
+      },
+    );
   };
 
   // Cancel a specific download
@@ -73,7 +86,7 @@ export const DownloadProvider = ({
 export const useDownload = (): DownloadContextProps => {
   const context = useContext(DownloadContext);
   if (!context) {
-    throw new Error('useMusicPlayer must be used within a MusicPlayerProvider');
+    throw new Error('useDownload must be used within a DownloadContext');
   }
   return context;
 };

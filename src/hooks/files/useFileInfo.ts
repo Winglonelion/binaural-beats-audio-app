@@ -16,5 +16,5 @@ export function useFileInfo(filePath: string) {
     });
   }, [checkExist]);
 
-  return info;
+  return { info, checkExist };
 }

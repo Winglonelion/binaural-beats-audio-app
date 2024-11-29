@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react';
+import { SQLiteProvider } from 'expo-sqlite';
 
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -6,6 +7,10 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import MusicPlayer from '@/components/MusicPlayer/MusicPlayer';
 
+import {
+  DATABASE_NAME,
+  DownloadedDBProvider,
+} from '@/providers/DownloadedDBProvider';
 import { DownloadProvider } from '@/providers/DownloadProvider';
 import { MusicPlayerProvider } from '@/providers/MusicPlayerProvider';
 import { FirebaseAnalyticsAdapter } from '@/services/analytics/adapter/firebase-analytics-adapter';
@@ -32,14 +37,18 @@ const AppProvider: FC<AppProviderProps> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={CommonStyles.flex1}>
-        <DownloadProvider>
-          <MusicPlayerProvider>
-            <BottomSheetModalProvider>
-              {children}
-              <MusicPlayer />
-            </BottomSheetModalProvider>
-          </MusicPlayerProvider>
-        </DownloadProvider>
+        <SQLiteProvider databaseName={DATABASE_NAME}>
+          <DownloadedDBProvider>
+            <DownloadProvider>
+              <MusicPlayerProvider>
+                <BottomSheetModalProvider>
+                  {children}
+                  <MusicPlayer />
+                </BottomSheetModalProvider>
+              </MusicPlayerProvider>
+            </DownloadProvider>
+          </DownloadedDBProvider>
+        </SQLiteProvider>
       </GestureHandlerRootView>
     </QueryClientProvider>
   );

@@ -23,7 +23,7 @@ const AudioItem: FC<AudioItemProps> = ({ item }) => {
   const { startDownload, cancelDownload, downloadProgress } = useDownload(); // Download methods
   const { cover_img, thumbhash = '', id } = item.metadata;
   const popRef = React.useRef<Popover>(null);
-  const info = useFileInfo(item.name);
+  const { info } = useFileInfo(item.name);
   const { exists: isFileExist = null } = info ?? {}; // Check if file exists
 
   const setProgress = useMemo(() => {
@@ -33,8 +33,8 @@ const AudioItem: FC<AudioItemProps> = ({ item }) => {
   }, []);
 
   const playAudio = useCallback(() => {
-    playNew(item, info);
-  }, [info, item, playNew]);
+    playNew(item);
+  }, [item, playNew]);
 
   useAnimatedReaction(
     () => downloadProgress.value[id] || 0, // Derived value
@@ -54,9 +54,9 @@ const AudioItem: FC<AudioItemProps> = ({ item }) => {
       cancelDownload(id); // Cancel if downloading
     } else {
       const url = `${ENV.API_URL}/download/${item.name}`;
-      startDownload(id, url, item.name); // Start download
+      startDownload(id, url, item); // Start download
     }
-  }, [cancelDownload, id, isFileExist, item.name, progress, startDownload]);
+  }, [cancelDownload, id, isFileExist, item, progress, startDownload]);
 
   return (
     <Pressable onPress={playAudio} style={styles.item}>

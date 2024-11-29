@@ -3,8 +3,8 @@ import * as FileSystem from 'expo-file-system';
 export class FileService {
   constructor(private basePath: string = '') {}
 
-  public async getFileInfo(filePath: string): Promise<FileSystem.FileInfo> {
-    const fullPath = FileSystem.documentDirectory + this.basePath + filePath;
+  public async getFileInfo(audioName: string): Promise<FileSystem.FileInfo> {
+    const fullPath = FileSystem.documentDirectory + this.basePath + audioName;
     return FileSystem.getInfoAsync(fullPath);
   }
 
