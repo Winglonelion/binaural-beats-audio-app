@@ -123,6 +123,15 @@ Key technical features include:
 #### **Optional**
 To enable offline mode, ensure your backend API is accessible by replacing `localhost` with the server IP in the frontend code.
 
+The backend for this project is implemented using Go. And already deployed in Render at: https://binaural-beats-audio-services.onrender.com
+
+> Because of limitation in cloud plan. So the first time call API in server could take long time to response. Please wait a minute then try again.
+>
+> To ensure the smooth user experience, deploy the Backend in local and link the API_URL environment to `http://localhost:8080`
+
+
+
+
 For more detailed information, please read [Frontend README](https://github.com/Winglonelion/binaural-beats-audio-app)
 
 ---
