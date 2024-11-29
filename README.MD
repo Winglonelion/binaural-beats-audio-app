@@ -46,7 +46,13 @@ The frontend for this app is built using React Native. To set it up:
 
 ## Backend Setup
 
-The backend for this project is implemented using Go. Follow these steps to set up and run the backend:
+The backend for this project is implemented using Go. And already deployed in Render at: https://binaural-beats-audio-services.onrender.com
+
+So, it could be easy to skip Backend setup on the case want focus on frontend only.
+
+
+
+On the case testing with self-build Backend, follow these steps to set up and run the backend:
 
 1. **Clone the repository**:
    ```bash
@@ -102,3 +108,20 @@ To test the functionality:
 1. Open the app.
 2. Choose an audio file to play.
 3. Adjust the volume and observe the frequency visualizer.
+
+## Checklist
+- [x] Well structured codebase
+- [x] Auto Linting and formatter setuped with strong rules/conventions.
+- [x] Code optimized performance with technicals like FlashList, memorization, Reanimated, Rive
+- [x] Apply Singleton, Factory and Provider design patterns
+- [x] Player UI with play/pause button
+- [x] Volume slide
+- [x] Progress slider 🚀
+- [x] Animation when playing
+- [x] Error handling & loading states
+- [x] Background audio playback
+- [x] Audio frequence visualizer
+- [x] Full featured Offline mode
+- [x] Basic analytics implementation
+- [x] Deployed BE to Render
+- [x] Basic unit testing
