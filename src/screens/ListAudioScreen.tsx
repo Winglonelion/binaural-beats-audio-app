@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Dimensions, StyleSheet, View } from 'react-native';
 
 import { FlashList } from '@shopify/flash-list';
+import Animated, { FadeIn, FadeOutDown } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import OnlineOfflineAnimation from '@/components/Animation/OnlineOfflineAnimation';
 import AudioItem from '@/components/List/AudioItem';
@@ -11,6 +13,8 @@ import { useAudioList } from '@/hooks/queries/audio';
 import useOffline from '@/hooks/utils/use-offline';
 import { useDownloadedDB } from '@/providers/DownloadedDBProvider';
 import analyticsService from '@/services/analytics/analytics.service';
+
+const { height } = Dimensions.get('screen');
 
 const ListAudioScreen = () => {
   const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } =
@@ -58,23 +62,34 @@ const ListAudioScreen = () => {
   }
 
   return (
-    <>
-      <View style={styles.container}>
-        <OnlineOfflineAnimation />
-        <FlashList
-          contentContainerStyle={styles.listContent}
-          data={isOffline ? offlineData : audioList}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          estimatedItemSize={100}
-          onEndReached={loadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={
-            isFetchingNextPage ? <ActivityIndicator size="small" /> : null
-          }
-        />
-      </View>
-    </>
+    <SafeAreaView style={styles.container}>
+      <OnlineOfflineAnimation />
+      <FlashList
+        contentContainerStyle={styles.listContent}
+        data={isOffline ? offlineData : audioList}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        estimatedItemSize={100}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+        ListEmptyComponent={
+          <View style={styles.emptyBox}>
+            <Animated.Text
+              entering={FadeIn.delay(5000)}
+              exiting={FadeOutDown}
+              style={styles.emptyText}
+            >
+              {isOffline
+                ? 'Go online and download musics to enjoy while offline'
+                : 'Opps! There is no musics available'}
+            </Animated.Text>
+          </View>
+        }
+        ListFooterComponent={
+          isFetchingNextPage ? <ActivityIndicator size="small" /> : null
+        }
+      />
+    </SafeAreaView>
   );
 };
 
@@ -91,6 +106,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  emptyBox: {
+    height: height * 0.7,
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    width: '80%',
+  },
+  emptyText: {
+    textAlign: 'center',
+    fontSize: 12,
+    color: '#bbb',
   },
 });
 
