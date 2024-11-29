@@ -1,4 +1,11 @@
+
 # **Binaural Beats Audio App White Paper**
+
+<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
+
+<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
+
+<img src="docs/images/img_1.png" alt="Overview Image" width="30%" />
 
 ## **Executive Summary**
 
@@ -11,134 +18,168 @@ Key technical features include:
 - **Advanced Analytics System**: Features a pluggable analytics framework compatible with Firebase Analytics and other platforms for tracking user behavior.
 - **Scalable Architecture**: Designed for modularity, ensuring easy extensibility and maintainability across both frontend and backend systems.
 
-This application demonstrates the integration of advanced software engineering principles to deliver an optimized and user-friendly solution.
-
----
-
-## **Introduction**
-
-### **What Are Binaural Beats?**
-Binaural beats are auditory illusions that influence brainwave activity, often used for relaxation, meditation, and cognitive enhancement. This application is built to provide users with access to these scientifically backed audio tracks.
-
-### **Project Goals**
-- Provide high-quality audio streaming with offline capabilities.
-- Optimize performance for both mobile and server environments.
-- Deliver an engaging user experience with dynamic UI elements and responsive feedback.
-- Build a scalable and maintainable architecture.
-
 ---
 
 ## **Technical Features**
 
 ### **Frontend (React Native)**
 
-1. **Efficient Audio Streaming**
-   - Utilizes byte-range requests (`Range` headers) for partial audio downloads, reducing bandwidth usage.
-   - Ensures smooth playback even in low-bandwidth conditions.
+#### **1. Efficient Audio Streaming**
+   - Implements byte-range requests using `Range` headers to enable partial audio downloads.
+   - Optimized for low-latency playback even with high-resolution audio files.
+   - Reduces bandwidth usage by downloading only the required segments of the audio file during playback.
 
-2. **Offline and Background Playback**
-   - Tracks can be downloaded and played offline, stored securely using `expo-file-system`.
-   - Background playback is integrated with system-level media controls for uninterrupted listening.
+#### **2. Offline and Background Playback**
+   - Audio files can be downloaded and stored securely using **expo-file-system**.
+   - Background playback is enabled via Expo's media controls, allowing users to play/pause/seek audio even when the app is minimized.
 
-3. **Dynamic UI with Animations**
-   - **Reanimated 3** powers animations like shared transitions, progress bars, and tooltips.
-   - **Rive** adds visual appeal with state-based animations for toggles and interactive elements.
+#### **3. Dynamic and Interactive UI**
+   - Smooth and responsive animations powered by **Reanimated 3**, providing:
+     - Shared transitions between UI states (e.g., Quick Player to Full Player).
+     - Progress bars and sliders with real-time feedback using shared values.
+   - **Rive** animations for micro-reactions, such as toggle buttons and visual indicators, improving user engagement.
 
-4. **Advanced Analytics System**
-   - Modular analytics framework supports Firebase Analytics and custom adapters.
-   - Tracks user interactions, downloads, and playback for actionable insights.
+#### **4. Advanced Analytics System**
+   - Modularized analytics framework supports Firebase Analytics and custom adapters.
+   - Tracks user behavior such as audio playback, downloads, and UI interactions.
+   - Easily extensible for adding new analytics providers or custom metrics.
 
-5. **Robust and Scalable Architecture**
-   - Modularized React Native components allow for rapid feature extension.
-   - Shared values ensure efficient state management without overloading React's render cycle.
+#### **5. Robust and Scalable Architecture**
+   - Modular React Native components ensure easy extension and maintenance.
+   - State management optimized using shared values to reduce unnecessary re-renders.
 
 ---
 
 ### **Backend (Golang)**
 
-1. **Streaming and Metadata API**
-   - RESTful endpoints serve audio files and metadata such as title, author, and cover images.
-   - Byte-range streaming reduces server load and enhances playback performance.
+#### **1. Audio Streaming with Metadata**
+   - RESTful API serves audio files with `Range` header support for efficient streaming.
+   - Additional metadata (e.g., title, author, duration) is provided alongside audio files.
 
-2. **Optimized Performance**
-   - Built using the **Gin** framework in `release` mode for high performance.
-   - Dockerized deployment ensures easy scaling and streamlined resource allocation.
+#### **2. Optimized Performance**
+   - Built using the **Gin** framework, running in `release` mode for maximum performance.
+   - Implements concurrent request handling and byte-range support for large-scale streaming.
 
-3. **Audio File Management**
-   - Metadata and audio files are organized to ensure efficient retrieval.
-   - Provides concurrent download support with resumable transfers.
+#### **3. Extensible Design**
+   - Metadata and audio files are organized for efficient retrieval and management.
+   - Supports horizontal scaling via Docker containers, ensuring the system can handle thousands of users simultaneously.
 
-4. **Extensible Design**
-   - Easily add new endpoints for features like user preferences or additional analytics.
-   - Scalable architecture supports increasing user loads and new functionalities.
-
----
-
-## **System Architecture**
-
-### **Frontend Workflow**
-
-1. **User Interaction**
-   - Users browse a list of binaural beats, download or stream tracks, and adjust playback settings.
-
-2. **Playback and Download Management**
-   - Background downloads managed by a `DownloadManager` with queue and pool support.
-   - Real-time playback progress tracked with shared values for responsive UI updates.
-
-3. **Analytics and Visualizations**
-   - Logs user interactions and playback metrics.
-   - Renders real-time frequency visualizations using React Native Skia.
-
-### **Backend Workflow**
-
-1. **Audio Streaming**
-   - Efficient byte-range streaming ensures optimal playback performance for large audio files.
-
-2. **Metadata Management**
-   - Serves metadata dynamically alongside audio files for frontend consumption.
-
-3. **Scalability**
-   - Dockerized backend ensures horizontal scalability and supports high concurrency.
+#### **4. Secure Offline Downloads**
+   - Metadata and download management integrated with client apps for secure and consistent offline playback.
 
 ---
 
-## **Key Use Cases**
+## **Setup Instructions**
 
-1. **Streaming High-Quality Audio**
-   - Provides high-quality binaural beats with efficient streaming optimized for low-latency playback.
+### **Frontend Setup**
 
-2. **Offline Mode**
-   - Users can download tracks for offline use and manage local storage through the app.
+#### **Prerequisites**
+- Node.js and Yarn installed on your system.
+- Expo CLI for running the app.
 
-3. **Background Playback**
-   - Enables seamless playback even when the app is minimized.
+#### **Steps**
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Winglonelion/binaural-beats-audio-app.git
+   ```
 
-4. **Interactive Visualizer**
-   - Real-time frequency visualizations enhance the listening experience.
+2. **Navigate to the project directory**:
+   ```bash
+   cd binaural-beats-audio-app
+   ```
 
-5. **Data Analytics**
-   - Tracks user behavior and system performance for continuous improvement.
+3. **Install dependencies**:
+   ```bash
+   yarn install
+   yarn pod
+   ```
 
+4. **Run the development server**:
+   ```bash
+   yarn start
+   ```
+
+5. **Run the application on iOS**:
+   ```bash
+   yarn ios
+   ```
+
+6. **Run the application on Android**:
+   ```bash
+   yarn android
+   ```
+
+#### **Optional**
+To enable offline mode, ensure your backend API is accessible by replacing `localhost` with the server IP in the frontend code.
+
+For more detailed information, please read [Frontend README](https://github.com/Winglonelion/binaural-beats-audio-app)
+
+---
+
+### **Backend Setup**
+
+#### **Prerequisites**
+- Go installed (version 1.21 or later).
+- Docker installed for containerized deployment.
+
+#### **Steps**
+
+**1. Clone the repository**
+
+```bash
+git clone https://github.com/Winglonelion/binaural-beats-audio-services.git
+cd binaural-beats-audio-services
+```
+
+**2. Quick start server with Docker**
+  ```bash
+  docker-compose up -d
+  ```
+
+**3. Install dependencies**
+
+Dependencies are managed via `go.mod`. Run the following command to ensure all dependencies are installed:
+
+```bash
+go mod tidy
+```
+
+**4. Run the server**
+
+Start the backend server:
+
+```bash
+go run main.go
+```
+
+   The server will be available at `http://localhost:8080`.
+
+**5. API Endpoints**:
+   - `GET /api/audio` - Returns a list of available audio files.
+   - `GET /api/audio/{file_name}` - Streams the selected audio file.
+   - `GET /api/download/{file_name}` - Downloads the audio file.
+
+      For more detailed information, please read [Backend README](https://github.com/Winglonelion/binaural-beats-audio-services)
 ---
 
 ## **Future Enhancements**
 
-1. **Offline Analytics**
-   - Cache analytics data offline and sync when back online.
+1. **Caching Mechanisms**:
+   - Implement caching for frequently accessed audio files to reduce server load.
 
-2. **Enhanced Visualizations**
-   - Explore advanced frequency visualizations, such as 3D or immersive effects.
+2. **Improved Offline Analytics**:
+   - Cache user activity data offline and sync with the backend when the device reconnects.
 
-3. **Machine Learning Recommendations**
-   - Suggest tracks based on user preferences and listening history.
+3. **Personalized Recommendations**:
+   - Use machine learning to suggest audio tracks based on user behavior and preferences.
 
-4. **Cross-Platform Support**
-   - Extend compatibility to desktop and web platforms.
+4. **Cross-Platform Support**:
+   - Extend compatibility to web and desktop platforms for a unified experience.
 
 ---
 
 ## **Conclusion**
 
-The **Binaural Beats Audio App** combines advanced software engineering, optimized performance, and a seamless user experience. By leveraging modern technologies like React Native, Reanimated, Rive, and Golang, the application demonstrates how technical excellence can deliver a robust and scalable product for end-users.
+The **Binaural Beats Audio App** is a robust and scalable solution for delivering high-quality binaural beats. By leveraging advanced streaming techniques, dynamic animations, and modular architecture, the app is both performant and user-friendly.
 
 For more details, visit the [GitHub Repository](https://github.com/Winglonelion).
