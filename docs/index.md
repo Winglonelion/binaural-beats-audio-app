@@ -192,6 +192,23 @@ For more detailed information, please read [Backend README](https://github.com/W
 
 ---
 
+## Checklist
+- [x] Well structured codebase
+- [x] Auto Linting and formatter setuped with strong rules/conventions.
+- [x] Code optimized performance with technicals like FlashList, memorization, Reanimated, Rive
+- [x] Apply Singleton, Factory and Provider design patterns
+- [x] Player UI with play/pause button
+- [x] Volume slide
+- [x] Progress slider 🚀
+- [x] Animation when playing
+- [x] Error handling & loading states
+- [x] Background audio playback
+- [x] Audio frequence visualizer
+- [x] Full featured Offline mode
+- [x] Basic analytics implementation
+- [x] Deployed BE to Render
+- [x] Basic unit testing
+
 ## **Conclusion**
 
 The **Binaural Beats Audio App** is a robust and scalable solution for delivering high-quality binaural beats. By leveraging advanced streaming techniques, dynamic animations, and modular architecture, the app is both performant and user-friendly.
